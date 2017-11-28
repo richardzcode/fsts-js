@@ -1,0 +1,27 @@
+{
+  "name": "fsts",
+  "version": "0.0.2",
+  "description": "Accumulated JavaScript toolkits library",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "babel src --presets babel-preset-env --out-dir dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/richardzcode/fsts-js.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "toolkits"
+  ],
+  "author": "Richard Zhang<richardzcode@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/richardzcode/fsts-js/issues"
+  },
+  "homepage": "https://github.com/richardzcode/fsts-js#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  }
+}
