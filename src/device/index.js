@@ -1,3 +1,5 @@
-export const hasWindow = () => {
-    return (typeof window !== 'undefined');
+export default class Device {
+    static hasWindow() {
+        return (typeof window !== 'undefined');
+    }
 }
