@@ -15,4 +15,8 @@ export default class JS {
 
         return s;
     }
+
+    static undefinedThen = (val, defVal) => {
+        return (typeof val === 'undefined')? defVal : val;
+    }
 }
