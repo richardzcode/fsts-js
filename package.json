@@ -1,6 +1,6 @@
 {
   "name": "fsts",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Accumulated JavaScript toolkits library",
   "main": "dist/index.js",
   "scripts": {
