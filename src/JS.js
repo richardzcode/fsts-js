@@ -1,5 +1,5 @@
 export default class JS {
-    static padNumber (n, length) {
+    static padNumber(n, length) {
         let cur = n % 10;
         let remain = Math.floor(n / 10);
         let s = '' + cur;
@@ -16,7 +16,7 @@ export default class JS {
         return s;
     }
 
-    static undefinedThen = (val, defVal) => {
+    static undefinedThen(val, defVal) {
         return (typeof val === 'undefined')? defVal : val;
     }
 }

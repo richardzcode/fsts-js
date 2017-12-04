@@ -31,6 +31,11 @@ var JS = function () {
 
             return s;
         }
+    }, {
+        key: 'undefinedThen',
+        value: function undefinedThen(val, defVal) {
+            return typeof val === 'undefined' ? defVal : val;
+        }
     }]);
 
     return JS;
