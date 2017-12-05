@@ -98,7 +98,7 @@ var JS = function () {
             Object.keys(obj).forEach(function (key) {
                 var val = obj[key];
                 callback(path, key, val);
-                JS._traverseProps(patch.concat(key), val, callback);
+                JS._traverseProps(path.concat(key), val, callback);
             });
         }
 

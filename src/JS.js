@@ -63,7 +63,7 @@ export default class JS {
         Object.keys(obj).forEach(key => {
             const val = obj[key];
             callback(path, key, val);
-            JS._traverseProps(patch.concat(key), val, callback);
+            JS._traverseProps(path.concat(key), val, callback);
         });
     }
 
