@@ -47,7 +47,12 @@ var JS = function () {
             var list = [].concat(less);
             list.forEach(function (prop) {
                 if (typeof prop === 'string') {
-                    delete p[prop];
+                    var regex = new RegEx('^' + prop + '$');
+                    Object.keys.map(function (key) {
+                        if (key.match(regex)) {
+                            delete p[key];
+                        }
+                    });
                 }
             });
 
