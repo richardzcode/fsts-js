@@ -35,6 +35,22 @@ export default class JS {
         return p;
     }
 
+    static hasProps(props, lookup) {
+        if (!lookup) { return 0; }
+
+        let count = 0;
+        const list = [].concat(lookup);
+        list.forEach(prop => {
+            if (typeof prop === 'string') {
+                const regex = new RegExp('^' + prop + '$');
+                Object.keys(props).map(key => {
+                    if (key.match(regex)) { count++; }
+                })
+            }
+        });
+
+        return count;
+    }
     static traverseProps(obj, callback) {
         if (!callback) { // No callback, do nothing
             return;

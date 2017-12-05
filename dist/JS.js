@@ -61,6 +61,28 @@ var JS = function () {
             return p;
         }
     }, {
+        key: 'hasProps',
+        value: function hasProps(props, lookup) {
+            if (!lookup) {
+                return 0;
+            }
+
+            var count = 0;
+            var list = [].concat(lookup);
+            list.forEach(function (prop) {
+                if (typeof prop === 'string') {
+                    var regex = new RegExp('^' + prop + '$');
+                    Object.keys(props).map(function (key) {
+                        if (key.match(regex)) {
+                            count++;
+                        }
+                    });
+                }
+            });
+
+            return count;
+        }
+    }, {
         key: 'traverseProps',
         value: function traverseProps(obj, callback) {
             if (!callback) {
