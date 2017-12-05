@@ -20,7 +20,7 @@ export default class JS {
         const p = Object.assign({}, props);
         if (!less) { return p; }
 
-        list = [].concat(less);
+        const list = [].concat(less);
         list.forEach(prop => {
             if (typeof prop === 'string') {
                 delete p[prop];
