@@ -95,6 +95,10 @@ var JS = function () {
     }, {
         key: '_traverseProps',
         value: function _traverseProps(path, obj, callback) {
+            if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object') {
+                return;
+            }
+
             Object.keys(obj).forEach(function (key) {
                 var val = obj[key];
                 callback(path, key, val);
