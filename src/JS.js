@@ -1,4 +1,5 @@
 export default class JS {
+    // String
     static padNumber(n, length) {
         let cur = n % 10;
         let remain = Math.floor(n / 10);
@@ -16,6 +17,7 @@ export default class JS {
         return s;
     }
 
+    // Object
     static lessProps(props, less) {
         const p = Object.assign({}, props);
         if (!less) { return p; }
@@ -30,6 +32,18 @@ export default class JS {
         return p;
     }
 
+    // Array
+    static appendUnique(ary, val) {
+        if (!ary) { return false; }
+
+        const exists = ary.filter(item => item === val);
+        if (exists.length > 0) { return false; }
+
+        ary.push(val);
+        return true;
+    }
+
+    // General
     static undefinedThen(val, defVal) {
         return (typeof val === 'undefined')? defVal : val;
     }

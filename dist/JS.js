@@ -15,6 +15,8 @@ var JS = function () {
 
     _createClass(JS, null, [{
         key: 'padNumber',
+
+        // String
         value: function padNumber(n, length) {
             var cur = n % 10;
             var remain = Math.floor(n / 10);
@@ -31,6 +33,9 @@ var JS = function () {
 
             return s;
         }
+
+        // Object
+
     }, {
         key: 'lessProps',
         value: function lessProps(props, less) {
@@ -39,7 +44,7 @@ var JS = function () {
                 return p;
             }
 
-            list = [].concat(less);
+            var list = [].concat(less);
             list.forEach(function (prop) {
                 if (typeof prop === 'string') {
                     delete p[prop];
@@ -48,6 +53,29 @@ var JS = function () {
 
             return p;
         }
+
+        // Array
+
+    }, {
+        key: 'appendUnique',
+        value: function appendUnique(ary, val) {
+            if (!ary) {
+                return false;
+            }
+
+            var exists = ary.filter(function (item) {
+                return item === val;
+            });
+            if (exists.length > 0) {
+                return false;
+            }
+
+            ary.push(val);
+            return true;
+        }
+
+        // General
+
     }, {
         key: 'undefinedThen',
         value: function undefinedThen(val, defVal) {
