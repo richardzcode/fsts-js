@@ -67,6 +67,7 @@ export default class JS {
         Object.keys(obj).forEach(key => {
             console.log('traversed to key ' + key);
             const val = obj[key];
+            console.log(val, callback);
             callback(path, key, val);
             JS._traverseProps(path.concat(key), val, callback);
         });
