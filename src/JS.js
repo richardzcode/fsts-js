@@ -25,7 +25,7 @@ export default class JS {
         const list = [].concat(less);
         list.forEach(prop => {
             if (typeof prop === 'string') {
-                const regex = new RegEx('^' + prop + '$');
+                const regex = new RegExp('^' + prop + '$');
                 Object.keys.map(key => {
                     if (key.match(regex)) { delete p[key]; }
                 })
