@@ -1,7 +1,3 @@
-import ConsoleLogger from './logger/ConsoleLogger';
-
-const logger = new ConsoleLogger('JS');
-
 export default class JS {
     // String
     static padNumber(n, length) {
@@ -58,7 +54,7 @@ export default class JS {
 
     static traverseProps(obj, callback) {
         if (!callback) {
-            logger.warn('no callback for traverse, do nothing');
+            console.log('no callback for traverse, do nothing');
             return;
         }
 
@@ -69,7 +65,7 @@ export default class JS {
         if (typeof obj !== 'object') { return; }
 
         Object.keys(obj).forEach(key => {
-            logger.debug('traversed to key ' + key);
+            console.log('traversed to key ' + key);
             const val = obj[key];
             callback(path, key, val);
             JS._traverseProps(path.concat(key), val, callback);
