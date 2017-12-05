@@ -1,4 +1,4 @@
-import { ConsoleLogger } from '../logger';
+import { ConsoleLogger as Logger } from '../logger';
 
 const logger = new Logger('LocalStorage');
 

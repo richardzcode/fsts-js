@@ -8,7 +8,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _logger = require('./logger');
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var logger = new Logger('JS');
 
 var JS = function () {
     function JS() {
@@ -86,7 +90,7 @@ var JS = function () {
         key: 'traverseProps',
         value: function traverseProps(obj, callback) {
             if (!callback) {
-                // No callback, do nothing
+                logger.warn('no callback for traverse, do nothing');
                 return;
             }
 
@@ -100,6 +104,7 @@ var JS = function () {
             }
 
             Object.keys(obj).forEach(function (key) {
+                logger.debug('traversed to key ' + key);
                 var val = obj[key];
                 callback(path, key, val);
                 JS._traverseProps(path.concat(key), val, callback);
