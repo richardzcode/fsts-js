@@ -60,6 +60,8 @@ export default class JS {
     }
 
     static _traverseProps(path, obj, callback) {
+        if (typeof obj !== 'object') { return; }
+
         Object.keys(obj).forEach(key => {
             const val = obj[key];
             callback(path, key, val);
