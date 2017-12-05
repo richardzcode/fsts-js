@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48,7 +50,7 @@ var JS = function () {
             list.forEach(function (prop) {
                 if (typeof prop === 'string') {
                     var regex = new RegExp('^' + prop + '$');
-                    Object.keys.map(function (key) {
+                    Object.keys(props).map(function (key) {
                         if (key.match(regex)) {
                             delete p[key];
                         }
@@ -58,9 +60,37 @@ var JS = function () {
 
             return p;
         }
+    }, {
+        key: 'traverseProps',
+        value: function traverseProps(obj, callback) {
+            if (!callback) {
+                // No callback, do nothing
+                return;
+            }
+
+            JS._traverseProps([], obj, callback);
+        }
+    }, {
+        key: '_traverseProps',
+        value: function _traverseProps(path, obj, callback) {
+            Object.keys(obj).forEach(function (key) {
+                var val = obj[key];
+                callback(path, key, val);
+                JS._traverseProps(patch.concat(key), val, callback);
+            });
+        }
 
         // Array
 
+    }, {
+        key: 'isArray',
+        value: function isArray(val) {
+            if ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) !== 'object') {
+                return false;
+            }
+
+            return typeof val.length === 'number';
+        }
     }, {
         key: 'appendUnique',
         value: function appendUnique(ary, val) {

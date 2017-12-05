@@ -35,7 +35,29 @@ export default class JS {
         return p;
     }
 
+    static traverseProps(obj, callback) {
+        if (!callback) { // No callback, do nothing
+            return;
+        }
+
+        JS._traverseProps([], obj, callback);
+    }
+
+    static _traverseProps(path, obj, callback) {
+        Object.keys(obj).forEach(key => {
+            const val = obj[key];
+            callback(path, key, val);
+            JS._traverseProps(patch.concat(key), val, callback);
+        });
+    }
+
     // Array
+    static isArray(val) {
+        if (typeof val !== 'object') { return false; }
+
+        return (typeof val.length === 'number');
+    }
+
     static appendUnique(ary, val) {
         if (!ary) { return false; }
 
