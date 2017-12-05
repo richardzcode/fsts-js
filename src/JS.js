@@ -16,6 +16,20 @@ export default class JS {
         return s;
     }
 
+    static lessProps(props, less) {
+        const p = Object.assign({}, props);
+        if (!less) { return p; }
+
+        list = [].concat(less);
+        list.forEach(prop => {
+            if (typeof prop === 'string') {
+                delete p[prop];
+            }
+        });
+
+        return p;
+    }
+
     static undefinedThen(val, defVal) {
         return (typeof val === 'undefined')? defVal : val;
     }

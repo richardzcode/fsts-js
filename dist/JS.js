@@ -32,6 +32,23 @@ var JS = function () {
             return s;
         }
     }, {
+        key: 'lessProps',
+        value: function lessProps(props, less) {
+            var p = Object.assign({}, props);
+            if (!less) {
+                return p;
+            }
+
+            list = [].concat(less);
+            list.forEach(function (prop) {
+                if (typeof prop === 'string') {
+                    delete p[prop];
+                }
+            });
+
+            return p;
+        }
+    }, {
         key: 'undefinedThen',
         value: function undefinedThen(val, defVal) {
             return typeof val === 'undefined' ? defVal : val;
