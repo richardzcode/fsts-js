@@ -47,7 +47,7 @@ var JS = function () {
             var list = [].concat(less);
             list.forEach(function (prop) {
                 if (typeof prop === 'string') {
-                    var regex = new RegEx('^' + prop + '$');
+                    var regex = new RegExp('^' + prop + '$');
                     Object.keys.map(function (key) {
                         if (key.match(regex)) {
                             delete p[key];
