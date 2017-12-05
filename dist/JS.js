@@ -12,7 +12,7 @@ var _logger = require('./logger');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var logger = new Logger('JS');
+var logger = new _logger.ConsoleLogger('JS');
 
 var JS = function () {
     function JS() {

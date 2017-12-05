@@ -1,6 +1,6 @@
-import { ConsoleLogger as Logger } from './logger';
+import ConsoleLogger from './logger/ConsoleLogger';
 
-const logger = new Logger('JS');
+const logger = new ConsoleLogger('JS');
 
 export default class JS {
     // String

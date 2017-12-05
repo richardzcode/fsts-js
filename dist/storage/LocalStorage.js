@@ -6,7 +6,7 @@ var _logger = require('../logger');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var logger = new Logger('LocalStorage');
+var logger = new _logger.ConsoleLogger('LocalStorage');
 
 var key_holder = '_fsts_ls_key_holder';
 

@@ -1,6 +1,6 @@
-import { ConsoleLogger as Logger } from '../logger';
+import ConsoleLogger from '../logger/ConsoleLogger';
 
-const logger = new Logger('LocalStorage');
+const logger = new ConsoleLogger('LocalStorage');
 
 const key_holder = '_fsts_ls_key_holder';
 
