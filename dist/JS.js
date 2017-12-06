@@ -100,7 +100,6 @@ var JS = function () {
             }
 
             Object.keys(obj).forEach(function (key) {
-                console.log('traversed to key ' + key);
                 var val = obj[key];
                 callback(path, key, val);
                 JS._traverseProps(path.concat(key), val, callback);
