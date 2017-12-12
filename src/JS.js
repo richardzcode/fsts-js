@@ -78,6 +78,10 @@ export default class JS {
         return (typeof val.length === 'number');
     }
 
+    static sureArray(ary) {
+        return [].concat(ary);
+    }
+
     static appendUnique(ary, val) {
         if (!ary) { return false; }
 

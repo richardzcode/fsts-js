@@ -118,6 +118,11 @@ var JS = function () {
             return typeof val.length === 'number';
         }
     }, {
+        key: 'arrayForSure',
+        value: function arrayForSure(ary) {
+            return [].concat(ary);
+        }
+    }, {
         key: 'appendUnique',
         value: function appendUnique(ary, val) {
             if (!ary) {
