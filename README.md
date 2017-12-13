@@ -5,6 +5,7 @@ JavaScript toolkits library accumulated from working from project to project.
 * [Install](#install)
 * [Library](#library)
   - [Logger](#logger)
+  - [JS](#js)
 
 ## Install
 
@@ -14,7 +15,7 @@ npm install --save fsts
 
 ## Library
 
-## Logger
+### Logger
 
 Javascript developers like to write `console.log`, then cleanup, then write more, then cleanup ...
 
@@ -52,7 +53,7 @@ Logger.LOG_LEVEL = 'DEBUG';
 
 Or during debug, write `window.LOG_LEVEL = 'DEBUG'` in your console to open it.
 
-<img src="media/fsts_logger.png" width="360" />
+<img src="media/fsts_logger.png" width="480" />
 
 ### JS
 
