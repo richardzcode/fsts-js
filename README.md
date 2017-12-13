@@ -74,7 +74,7 @@ JS.padNumber('10', 2); // 10
 
 ```
 let obj = { a: 'a', b: 'b' };
-JS.lessProps(obj, 'a'); // obj: { a: 'a' }
+JS.lessProps(obj, 'b'); // obj: { a: 'a' }
 
 obj = { a: 'a', b: 'b', ba: 'ba' };
 JS.lessProps(obj, 'b.*'); // obj: { a: 'a' }
