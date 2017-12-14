@@ -1,6 +1,8 @@
 export default class JS {
     // String
     static padNumber(n, length) {
+        if (n < 0) { return '-' + JS.padNumber(-n, length-1); }
+
         let cur = n % 10;
         let remain = Math.floor(n / 10);
         let s = '' + cur;
