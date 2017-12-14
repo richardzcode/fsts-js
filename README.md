@@ -5,6 +5,7 @@ JavaScript toolkits library accumulated from working from project to project.
 * [Install](#install)
 * [Library](#library)
   - [Logger](#logger)
+  - [Cache](#cache)
   - [JS](#js)
 
 ## Install
@@ -54,6 +55,26 @@ Logger.LOG_LEVEL = 'DEBUG';
 Or during debug, write `window.LOG_LEVEL = 'DEBUG'` in your console to open it.
 
 <img src="media/fsts_logger.png" width="480" />
+
+### Cache
+
+Cache make use of `window.localStorage`. If not available then create in-memory cache.
+
+```
+import { Cache } from 'fsts';
+
+const item = 'hello';
+Cache.set('key', item);
+Cache.get('key'); // 'hello'
+
+const item = { greeting: 'hello' };
+Cache.set('key', item);
+Cache.get('key'); // { greeting: 'hello' }
+
+const item = ['hello', 'there'];
+Cache.set('key', item);
+Cache.get('key'); // ['hello', 'there']
+```
 
 ### JS
 
