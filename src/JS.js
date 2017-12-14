@@ -1,5 +1,9 @@
 export default class JS {
     // String
+    static isString(val) {
+        return (typeof val === 'string');
+    }
+
     static padNumber(n, length) {
         if (n < 0) { return '-' + JS.padNumber(-n, length-1); }
 
@@ -94,8 +98,17 @@ export default class JS {
         return true;
     }
 
+    // Date Time
+    static ts() {
+        return new Date().getTime();
+    }
+
     // General
+    static isUndefined(val) {
+        return (typeof val === 'undefined');
+    }
+
     static undefinedThen(val, defVal) {
-        return (typeof val === 'undefined')? defVal : val;
+        return JS.isUndefined(val)? defVal : val;
     }
 }

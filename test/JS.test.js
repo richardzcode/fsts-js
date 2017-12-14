@@ -1,7 +1,6 @@
 import assert from 'assert';
 
 import JS from '../src/JS';
-console.log(JS.padNumber)
 
 describe('JS', function() {
     describe('padNumber', function() {
