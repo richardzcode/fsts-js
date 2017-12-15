@@ -30,24 +30,30 @@ Button.defaultProps = {
   target: '_self',
 };
 
+const SplashWrapper = (props) => (
+  <div className="homeContainer">
+    <div className="homeSplashFade">
+      <div className="wrapper homeWrapper">
+        {props.children}
+      </div>
+    </div>
+  </div>
+)
+
 class HomeSplash extends React.Component {
   render() {
     return (
-      <div className="homeContainer">
-        <div className="homeSplashFade">
-          <div className="wrapper homeWrapper">
-            <div className="projectLogo">
-              <img src={siteConfig.baseUrl + 'img/docusaurus.svg'} />
-            </div>
-            <div className="inner">
-              <h2 className="projectTitle">
-                {siteConfig.title}
-                <small>{siteConfig.tagline}</small>
-              </h2>
-            </div>
-          </div>
+      <SplashWrapper>
+        <div className="projectLogo">
+          <img src={siteConfig.baseUrl + 'img/docusaurus.svg'} />
         </div>
-      </div>
+        <div className="inner">
+          <h2 className="projectTitle">
+            {siteConfig.title}
+            <small>{siteConfig.tagline}</small>
+          </h2>
+        </div>
+      </SplashWrapper>
     );
   }
 }
