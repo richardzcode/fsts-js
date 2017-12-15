@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>fsts-js Blog</title>
+        <link>https://richardzcode.github.io/blog</link>
+        <description>The best place to stay up-to-date with the latest fsts-js news and events.</description>
+        <lastBuildDate>Thu, 01 Jan 1970 00:00:00 GMT</lastBuildDate>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <generator>Feed for Node.js</generator>
+        <image>
+            <title>fsts-js Blog</title>
+            <url>https://richardzcode.github.ioimg/docusaurus.svg</url>
+            <link>https://richardzcode.github.io/blog</link>
+        </image>
+        <copyright>Copyright © 2017 Your Name or Your Company Name</copyright>
+        <item>
+            <title><![CDATA[Docusaurus]]></title>
+            <link>https://richardzcode.github.io/blog/2017/12/14_docusaurus.html</link>
+            <guid>https://richardzcode.github.io/blog/2017/12/14_docusaurus.html</guid>
+            <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
+            <description><![CDATA[Try out Docusaurus. So far so good.]]></description>
+        </item>
+    </channel>
+</rss>

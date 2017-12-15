@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://richardzcode.github.io/blog</id>
+    <title>fsts-js Blog</title>
+    <updated>1970-01-01T00:00:00Z</updated>
+    <generator>Feed for Node.js</generator>
+    <link rel="alternate" href="https://richardzcode.github.io/blog"/>
+    <subtitle>The best place to stay up-to-date with the latest fsts-js news and events.</subtitle>
+    <logo>https://richardzcode.github.ioimg/docusaurus.svg</logo>
+    <rights>Copyright © 2017 Your Name or Your Company Name</rights>
+    <entry>
+        <title type="html"><![CDATA[Docusaurus]]></title>
+        <id>https://richardzcode.github.io/blog/2017/12/14_docusaurus.html</id>
+        <link href="https://richardzcode.github.io/blog/2017/12/14_docusaurus.html">
+        </link>
+        <updated>1970-01-01T00:00:00Z</updated>
+        <summary type="html"><![CDATA[Try out Docusaurus. So far so good.]]></summary>
+        <author>
+            <name>Richard Zhang</name>
+            <uri>https://github.com/richardzcode</uri>
+        </author>
+    </entry>
+</feed>

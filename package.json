@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src --out-dir lib",
     "test": "mocha --require babel-register",
-    "pack": "rollup -c rollup.dev.js && rollup -c rollup.prod.js"
+    "pack": "rollup -c rollup.dev.js & rollup -c rollup.prod.js"
   },
   "repository": {
     "type": "git",
