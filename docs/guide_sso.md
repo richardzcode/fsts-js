@@ -5,6 +5,16 @@ title: Single Sign On
 
 Library for social sign in. Encapsulate different providers implementation detail.
 
+* [API](#api)
+  - [Methods](#methods)
+  - [Options](#options)
+* [Provider](#provider)
+  - [Google](#google)
+  - [Facebook](#facebook)
+  - [LinkedIn](#linkedin)
+
+## API
+
 ### Methods
 
 Each provider has these methods:
@@ -41,7 +51,7 @@ const options = {
 const G = new SSO.Google(options);
 ```
 
-### Providers
+## Provider
 
 Different provider requires different parameter, and returns different user object. This library does not attempt to unify. Just leave as close to individual provider SDK as possible.
 
@@ -49,7 +59,7 @@ Different provider requires different parameter, and returns different user obje
 * Facebook
 * LinkedIn
 
-#### Google
+### Google
 
 Parameter: `google_client_id`
 User object:
@@ -81,7 +91,7 @@ G.signOut()
     .catch(err => console.log(err));
 ```
 
-#### Facebook
+### Facebook
 
 Parameter: `facebook_app_id`
 User object:
@@ -113,7 +123,7 @@ F.signOut()
     .catch(err => console.log(err));
 ```
 
-#### LinkedIn
+### LinkedIn
 
 Parameter: `api_key`
 User object:
