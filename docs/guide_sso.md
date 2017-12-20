@@ -25,7 +25,7 @@ Each provider has these methods:
 Normally for each SSO object just one parameter, client_id/app_id/app_key/etc., is enough.
 
 ```
-const G = new SSO.Goolge(google_client_id);
+const G = new SSO.Google(google_client_id);
 ```
 
 In some cases additional infomation may be needed. Construction could take an object instead of string for more options.
@@ -38,17 +38,30 @@ const options = {
     script: ...,
     scope: ...
 }
-const G = new SSO.Goolge(options);
+const G = new SSO.Google(options);
 ```
 
 ### Providers
+
+Different provider requires different parameter, and returns different user object. This library does not attempt to unify. Just leave as close to individual provider SDK as possible.
 
 * Google
 * Facebook
 * LinkedIn
 
-Google Sign In
+#### Google
 
+Parameter: `google_client_id`
+User object:
+```
+    {
+        id_token,
+        email,
+        name
+    }
+```
+
+Usage
 ```
 import { SSO } from 'fsts';
 
@@ -64,6 +77,71 @@ G.signIn()
     .catch(err => console.log(err));
 
 G.signOut()
+    .then(() => console.log('out'))
+    .catch(err => console.log(err));
+```
+
+#### Facebook
+
+Parameter: `facebook_app_id`
+User object:
+```
+    {
+        accessToken,
+        userID,
+        name
+    }
+```
+
+Usage
+```
+import { SSO } from 'fsts';
+
+const F = new SSO.Facebook(facebook_app_id);
+
+F.ready()
+    .check()
+    .then(user => console.log(user))
+    .catch(err => console.log(err));
+
+F.signIn()
+    .then(user => console.log(user))
+    .catch(err => console.log(err));
+
+F.signOut()
+    .then(() => console.log('out'))
+    .catch(err => console.log(err));
+```
+
+#### LinkedIn
+
+Parameter: `api_key`
+User object:
+```
+    {
+        id,
+        firstName,
+        lastName,
+        headline
+    }
+```
+
+Usage
+```
+import { SSO } from 'fsts';
+
+const LI = new SSO.LinkedIn(api_key);
+
+LI.ready()
+    .check()
+    .then(user => console.log(user))
+    .catch(err => console.log(err));
+
+LI.signIn()
+    .then(user => console.log(user))
+    .catch(err => console.log(err));
+
+LI.signOut()
     .then(() => console.log('out'))
     .catch(err => console.log(err));
 ```
