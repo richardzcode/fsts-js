@@ -20,6 +20,27 @@ Each provider has these methods:
                         // rejects when error
 ```
 
+### Options
+
+Normally for each SSO object just one parameter, client_id/app_id/app_key/etc., is enough.
+
+```
+const G = new SSO.Goolge(google_client_id);
+```
+
+In some cases additional infomation may be needed. Construction could take an object instead of string for more options.
+
+For example, set `script` to 'none' to tell not to load SDK js. The SDK is loaded by other code.
+
+```
+const options = {
+    google_client_id: ...,
+    script: ...,
+    scope: ...
+}
+const G = new SSO.Goolge(options);
+```
+
 ### Providers
 
 * Google
