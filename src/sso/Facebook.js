@@ -101,12 +101,19 @@ export default class Facebook {
                 checkCount++;
                 if (that._fb) {
                     resolve();
+                    return;
+                }
+
+                if (window.FB) {
+                    that._fb = window.FB;
+                    resolve();
+                    return;
+                }
+
+                if (checkCount < 5) {
+                    window.setTimeout(checkFB, 500);
                 } else {
-                    if (checkCount < 5) {
-                        window.setTimeout(checkFB, 500);
-                    } else {
-                        reject('timeout');
-                    }
+                    reject('timeout');
                 }
             }
             checkFB();
@@ -159,9 +166,16 @@ export default class Facebook {
     _createScript() {
         if (window.FB) {
             this._fbAsyncInit();
-        } else {
-            window.fbAsyncInit = this._fbAsyncInit;
-            Device.createScript(this._options.script, true);
+            return;
         }
+
+        const { script } = this._options;
+        if (script === 'none') {
+            if (window.FB) { this._fb = window.FB; }
+            return;
+        }
+
+        window.fbAsyncInit = this._fbAsyncInit;
+        Device.createScript(this._options.script, true);
     }
 }

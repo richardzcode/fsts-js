@@ -88,12 +88,18 @@ export default class Google {
                 checkCount++;
                 if (that._ga) {
                     resolve();
+                    return;
+                }
+
+                if (window.gapi) {
+                    that._initGapi();
+                    return;
+                }
+
+                if (checkCount < 5) {
+                    window.setTimeout(checkGA, 500);
                 } else {
-                    if (checkCount < 5) {
-                        window.setTimeout(checkGA, 500);
-                    } else {
-                        reject('timeout');
-                    }
+                    reject('timeout');
                 }
             }
             checkGA();
@@ -113,10 +119,16 @@ export default class Google {
     _createScript() {
         if (window.gapi) {
             this._initGapi();
-        } else {
-            const src = this._options.script;
-            Device.createScript(src, true, this._initGapi);
+            return;
         }
+
+        const { script } = this._options;
+        if (script === 'none') {
+            return;
+        }
+
+        const src = this._options.script;
+        Device.createScript(src, true, this._initGapi);
     }
 
     _initGapi() {

@@ -97,12 +97,18 @@ export default class LinkedIn {
                 checkCount++;
                 if (that._IN && that._INLoaded) {
                     resolve();
+                    return;
+                }
+
+                if (window.IN) {
+                    that._initIn();
+                    return;
+                }
+
+                if (checkCount < 5) {
+                    window.setTimeout(checkIN, 500);
                 } else {
-                    if (checkCount < 5) {
-                        window.setTimeout(checkIN, 500);
-                    } else {
-                        reject('timeout');
-                    }
+                    reject('timeout');
                 }
             }
             checkIN();
@@ -129,11 +135,15 @@ export default class LinkedIn {
     _createScript() {
         if (window.IN) {
             this._initIn();
-            this._INLoaded = true;
-        } else {
-            window._in_onload = this._fullyLoaded;
-            Device.createScript(this._options.script, true, this._initIn);
         }
+
+        const { script } = this._options;
+        if (script === 'none') {
+            return;
+        }
+
+        window._in_onload = this._fullyLoaded;
+        Device.createScript(this._options.script, true, this._initIn);
     }
 
     _initIn() {
