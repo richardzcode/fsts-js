@@ -10,10 +10,10 @@ npm install --save fsts
 
 **Library**
 
-* [Logger](#logger)
-* [Cache](#cache)
-* [Single Sign On](#single-sign-on)
-* [JS](#js)
+* [Logger](https://richardzcode.github.io/fsts-js/docs/guide_logger.html)
+* [Cache](https://richardzcode.github.io/fsts-js/docs/guide_cache.html)
+* [Single Sign On](https://richardzcode.github.io/fsts-js/docs/guide_sso.html)
+* [JS](https://richardzcode.github.io/fsts-js/docs/guide_js.html)
 
 **Documentation**
 
