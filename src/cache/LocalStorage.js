@@ -1,7 +1,7 @@
 import JS from '../JS';
-import ConsoleLogger from '../logger/ConsoleLogger';
+import Logger from '../logger';
 
-const logger = new ConsoleLogger('LocalStorage');
+const logger = new Logger('LocalStorage');
 
 const defaultOptions = {
     prefix: '_fsts_',

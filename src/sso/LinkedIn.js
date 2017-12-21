@@ -1,7 +1,7 @@
 import Device from '../Device';
-import ConsoleLogger from '../logger/ConsoleLogger';
+import Logger from '../logger';
 
-const logger = new ConsoleLogger('SSO.LinkedIn');
+const logger = new Logger('SSO.LinkedIn');
 
 const default_options = {
     api_key: null,

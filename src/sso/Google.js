@@ -1,7 +1,7 @@
 import Device from '../Device';
-import ConsoleLogger from '../logger/ConsoleLogger';
+import Logger from '../logger';
 
-const logger = new ConsoleLogger('SSO.Google');
+const logger = new Logger('SSO.Google');
 
 const default_options = {
     google_client_id: null,

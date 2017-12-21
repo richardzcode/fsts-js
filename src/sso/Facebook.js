@@ -1,7 +1,7 @@
 import Device from '../Device';
-import ConsoleLogger from '../logger/ConsoleLogger';
+import Logger from '../logger';
 
-const logger = new ConsoleLogger('SSO.Facebook');
+const logger = new Logger('SSO.Facebook');
 
 const default_options = {
     facebook_app_id: null,

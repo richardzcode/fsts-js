@@ -1,7 +1,7 @@
 import JS from '../JS';
-import ConsoleLogger from '../logger/ConsoleLogger';
+import Logger from '../logger';
 
-const logger = new ConsoleLogger('MemoryStorage');
+const logger = new Logger('MemoryStorage');
 
 const defaultOptions = {
     expiration: '3600' // seconds

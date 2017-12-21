@@ -308,6 +308,8 @@ var ConsoleLogger = function () {
     return ConsoleLogger;
 }();
 
+var Logger = ConsoleLogger;
+
 var Device = function () {
     function Device() {
         babelHelpers.classCallCheck(this, Device);
@@ -318,11 +320,20 @@ var Device = function () {
         value: function hasWindow() {
             return typeof window !== 'undefined';
         }
+    }, {
+        key: 'createScript',
+        value: function createScript(src, async, onload) {
+            var script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            script.onload = onload;
+            document.body.appendChild(script);
+        }
     }]);
     return Device;
 }();
 
-var logger = new ConsoleLogger('LocalStorage');
+var logger = new Logger('LocalStorage');
 
 var defaultOptions = {
     prefix: '_fsts_',
@@ -458,7 +469,7 @@ var LocalStorage = function () {
     return LocalStorage;
 }();
 
-var logger$1 = new ConsoleLogger('MemoryStorage');
+var logger$1 = new Logger('MemoryStorage');
 
 var defaultOptions$1 = {
     expiration: '3600' // seconds
@@ -569,6 +580,766 @@ var MemoryStorage = function () {
 
 var _instance = Device.hasWindow() ? new LocalStorage() : new MemoryStorage();
 
+var logger$2 = new Logger('SSO.Google');
+
+var default_options = {
+    google_client_id: null,
+    script: 'https://apis.google.com/js/platform.js',
+    scope: 'profile email openid'
+
+    /**
+    * Reference: https://developers.google.com/identity/sign-in/web/reference
+    */
+};
+var Google = function () {
+    function Google(options) {
+        babelHelpers.classCallCheck(this, Google);
+
+        if (typeof options === 'string') {
+            options = { google_client_id: options };
+        }
+        this._options = Object.assign({}, default_options, options);
+        if (!this._options.google_client_id) {
+            logger$2.warn('missing google_client_id');
+        }
+
+        this.signIn = this.signIn.bind(this);
+        this.signOut = this.signOut.bind(this);
+        this.check = this.check.bind(this);
+        this.ready = this.ready.bind(this);
+
+        this._initGapi = this._initGapi.bind(this);
+        this._user = this._user.bind(this);
+
+        this._ga = null;
+
+        this._createScript();
+    }
+
+    babelHelpers.createClass(Google, [{
+        key: 'signIn',
+        value: function signIn() {
+            var _this = this;
+
+            if (!this._ga) {
+                return Promise.reject('no ga instance');
+            }
+
+            return this._ga.signIn().then(function (googleUser) {
+                return _this._user(googleUser);
+            });
+        }
+    }, {
+        key: 'signOut',
+        value: function signOut() {
+            if (!this._ga) {
+                return Promise.reject('no ga instance');
+            }
+
+            return this._ga.signOut();
+        }
+    }, {
+        key: 'check',
+        value: function check() {
+            var _this2 = this;
+
+            if (!this._ga) {
+                return Promise.reject('no ga instance');
+            }
+
+            return new Promise(function (resolve, reject) {
+                var googleUser = _this2._ga.currentUser.get();
+                if (!googleUser) {
+                    reject('no google user');
+                    return;
+                }
+                if (googleUser.isSignedIn()) {
+                    resolve(_this2._user(googleUser));
+                } else {
+                    reject('not signed in');
+                }
+            });
+        }
+    }, {
+        key: 'ready',
+        value: function ready() {
+            var google_client_id = this._options.google_client_id;
+
+            if (!google_client_id) {
+                return Promise.reject('missing google_client_id in options');
+            }
+
+            var that = this;
+            return new Promise(function (resolve, reject) {
+                var checkCount = 0;
+                var checkGA = function checkGA() {
+                    checkCount++;
+                    if (that._ga) {
+                        resolve();
+                        return;
+                    }
+
+                    if (window.gapi) {
+                        that._initGapi();
+                        return;
+                    }
+
+                    if (checkCount < 5) {
+                        window.setTimeout(checkGA, 500);
+                    } else {
+                        reject('timeout');
+                    }
+                };
+                checkGA();
+            });
+        }
+    }, {
+        key: '_user',
+        value: function _user(googleUser) {
+            var _googleUser$getAuthRe = googleUser.getAuthResponse(),
+                id_token = _googleUser$getAuthRe.id_token;
+
+            var profile = googleUser.getBasicProfile();
+            return {
+                id_token: id_token,
+                email: profile.getEmail(),
+                name: profile.getName()
+            };
+        }
+    }, {
+        key: '_createScript',
+        value: function _createScript() {
+            if (window.gapi) {
+                this._initGapi();
+                return;
+            }
+
+            var script = this._options.script;
+
+            if (script === 'none') {
+                return;
+            }
+
+            var src = this._options.script;
+            Device.createScript(src, true, this._initGapi);
+        }
+    }, {
+        key: '_initGapi',
+        value: function _initGapi() {
+            logger$2.debug('init gapi');
+            var _options = this._options,
+                google_client_id = _options.google_client_id,
+                scope = _options.scope;
+
+            if (!google_client_id) {
+                logger$2.warn('missing google_client_id in options');
+                return;
+            }
+
+            var that = this;
+            var g = window.gapi;
+            g.load('auth2', function () {
+                g.auth2.init({
+                    client_id: google_client_id,
+                    scope: scope
+                }).then(function (ga) {
+                    that._ga = ga;
+                });
+            });
+        }
+    }]);
+    return Google;
+}();
+
+var logger$3 = new Logger('SSO.Facebook');
+
+var default_options$1 = {
+    facebook_app_id: null,
+    script: 'https://connect.facebook.net/en_US/sdk.js',
+    scope: 'public_profile,email'
+
+    /**
+    * Reference: https://developers.facebook.com/docs/reference/javascript/FB.getLoginStatus
+    */
+};
+var Facebook = function () {
+    function Facebook(options) {
+        babelHelpers.classCallCheck(this, Facebook);
+
+        if (typeof options === 'string') {
+            options = { facebook_app_id: options };
+        }
+        this._options = Object.assign({}, default_options$1, options);
+        if (!this._options.facebook_app_id) {
+            logger$3.warn('missing facebook_app_id');
+        }
+
+        this.signIn = this.signIn.bind(this);
+        this.signOut = this.signOut.bind(this);
+        this.check = this.check.bind(this);
+        this.ready = this.ready.bind(this);
+
+        this._fbAsyncInit = this._fbAsyncInit.bind(this);
+        this._user = this._user.bind(this);
+
+        this._fb = null;
+
+        this._createScript();
+    }
+
+    babelHelpers.createClass(Facebook, [{
+        key: 'signIn',
+        value: function signIn() {
+            var _this = this;
+
+            var fb = this._fb;
+            if (!fb) {
+                return Promise.reject('no fb instance');
+            }
+
+            var scope = this._options.scope;
+
+            return this.check().then(function (authResponse) {
+                return _this._user(authResponse);
+            }).catch(function (err) {
+                return new Promise(function (resolve, reject) {
+                    fb.login(function (response) {
+                        resolve(_this._user(response.authResponse));
+                    }, { scope: scope });
+                });
+            });
+        }
+    }, {
+        key: 'signOut',
+        value: function signOut() {
+            var fb = this._fb;
+            if (!fb) {
+                return Promise.reject('no fb instance');
+            }
+
+            return new Promise(function (resolve, reject) {
+                fb.logout(function (response) {
+                    logger$3.debug('signed out', response);
+                    resolve();
+                });
+            });
+        }
+    }, {
+        key: 'check',
+        value: function check() {
+            var fb = this._fb;
+            if (!fb) {
+                return Promise.reject('no fb instance');
+            }
+
+            return new Promise(function (resolve, reject) {
+                fb.getLoginStatus(function (response) {
+                    if (response.status === 'connected') {
+                        resolve(response.authResponse);
+                    } else {
+                        reject(response);
+                    }
+                });
+            });
+        }
+    }, {
+        key: 'ready',
+        value: function ready() {
+            var facebook_app_id = this._options.facebook_app_id;
+
+            if (!facebook_app_id) {
+                return Promise.reject('missing facebook_app_id in props');
+            }
+
+            var that = this;
+            return new Promise(function (resolve, reject) {
+                var checkCount = 0;
+                var checkFB = function checkFB() {
+                    checkCount++;
+                    if (that._fb) {
+                        resolve();
+                        return;
+                    }
+
+                    if (window.FB) {
+                        that._fb = window.FB;
+                        resolve();
+                        return;
+                    }
+
+                    if (checkCount < 5) {
+                        window.setTimeout(checkFB, 500);
+                    } else {
+                        reject('timeout');
+                    }
+                };
+                checkFB();
+            });
+        }
+    }, {
+        key: '_user',
+        value: function _user(authResponse) {
+            if (!authResponse) {
+                return Promise.reject('no authResponse');
+            }
+            var accessToken = authResponse.accessToken,
+                userID = authResponse.userID;
+
+            if (!accessToken) {
+                return Promise.reject('no accessToken');
+            }
+
+            var fb = this._fb;
+            return new Promise(function (resolve, reject) {
+                fb.api('/me', function (response) {
+                    var user = {
+                        accessToken: accessToken,
+                        userID: userID,
+                        name: response.name
+                    };
+
+                    logger$3.debug('user', user);
+                    resolve(user);
+                });
+            });
+        }
+    }, {
+        key: '_fbAsyncInit',
+        value: function _fbAsyncInit() {
+            logger$3.debug('init FB');
+
+            var facebook_app_id = this._options.facebook_app_id;
+
+            if (!facebook_app_id) {
+                logger$3.warn('missing facebook_app_id in props');
+                return;
+            }
+
+            var fb = window.FB;
+            fb.init({
+                appId: facebook_app_id,
+                cookie: true,
+                xfbml: true,
+                version: 'v2.11'
+            });
+            this._fb = fb;
+        }
+    }, {
+        key: '_createScript',
+        value: function _createScript() {
+            if (window.FB) {
+                this._fbAsyncInit();
+                return;
+            }
+
+            var script = this._options.script;
+
+            if (script === 'none') {
+                if (window.FB) {
+                    this._fb = window.FB;
+                }
+                return;
+            }
+
+            window.fbAsyncInit = this._fbAsyncInit;
+            Device.createScript(this._options.script, true);
+        }
+    }]);
+    return Facebook;
+}();
+
+var logger$4 = new Logger('SSO.LinkedIn');
+
+var default_options$2 = {
+    api_key: null,
+    script: 'http://platform.linkedin.com/in.js?async=true'
+
+    /**
+    * Reference: https://developer.linkedin.com/docs/getting-started-js-sdk
+    */
+};
+var LinkedIn = function () {
+    function LinkedIn(options) {
+        babelHelpers.classCallCheck(this, LinkedIn);
+
+        if (typeof options === 'string') {
+            options = { api_key: options };
+        }
+        this._options = Object.assign({}, default_options$2, options);
+        if (!this._options.api_key) {
+            logger$4.warn('missing api_key');
+        }
+
+        this.signIn = this.signIn.bind(this);
+        this.signOut = this.signOut.bind(this);
+        this.check = this.check.bind(this);
+        this.ready = this.ready.bind(this);
+
+        this._user = this._user.bind(this);
+        this._initIn = this._initIn.bind(this);
+        this._fullyLoaded = this._fullyLoaded.bind(this);
+
+        this._IN = null;
+        this._INLoaded = false;
+
+        this._createScript();
+    }
+
+    babelHelpers.createClass(LinkedIn, [{
+        key: 'signIn',
+        value: function signIn() {
+            var IN = this._IN;
+            if (!IN) {
+                return Promise.reject('no IN instance');
+            }
+
+            var that = this;
+            return new Promise(function (resolve, reject) {
+                IN.User.authorize(function () {
+                    that._user().then(function (user) {
+                        return resolve(user);
+                    }).catch(function (err) {
+                        return reject(err);
+                    });
+                });
+            });
+        }
+    }, {
+        key: 'signOut',
+        value: function signOut() {
+            var IN = this._IN;
+            if (!IN) {
+                return Promise.reject('no IN instance');
+            }
+
+            return new Promise(function (resolve, reject) {
+                IN.User.logout(function () {
+                    logger$4.debug('signed out');
+                    resolve();
+                });
+            });
+        }
+    }, {
+        key: 'check',
+        value: function check() {
+            var IN = this._IN;
+            if (!IN) {
+                return Promise.reject('no IN instance');
+            }
+
+            if (!IN.User.isAuthorized()) {
+                return Promise.reject('not authorized');
+            }
+
+            return this._user();
+        }
+    }, {
+        key: 'ready',
+        value: function ready() {
+            var api_key = this._options.api_key;
+
+            if (!api_key) {
+                return Promise.reject('missing api_key');
+            }
+
+            var that = this;
+            return new Promise(function (resolve, reject) {
+                var checkCount = 0;
+                var checkIN = function checkIN() {
+                    checkCount++;
+                    if (that._IN && that._INLoaded) {
+                        resolve();
+                        return;
+                    }
+
+                    if (window.IN) {
+                        that._initIn();
+                        return;
+                    }
+
+                    if (checkCount < 5) {
+                        window.setTimeout(checkIN, 500);
+                    } else {
+                        reject('timeout');
+                    }
+                };
+                checkIN();
+            });
+        }
+    }, {
+        key: '_user',
+        value: function _user() {
+            var IN = this._IN;
+            return new Promise(function (resolve, reject) {
+                IN.API.Raw('/people/~').result(function (profile) {
+                    var firstName = profile.firstName,
+                        lastName = profile.lastName,
+                        id = profile.id,
+                        headline = profile.headline;
+
+                    resolve({
+                        id: id,
+                        firstName: firstName,
+                        lastName: lastName,
+                        headline: headline
+                    });
+                }).error(function (err) {
+                    return reject(err);
+                });
+            });
+        }
+    }, {
+        key: '_createScript',
+        value: function _createScript() {
+            if (window.IN) {
+                this._initIn();
+            }
+
+            var script = this._options.script;
+
+            if (script === 'none') {
+                return;
+            }
+
+            window._in_onload = this._fullyLoaded;
+            Device.createScript(this._options.script, true, this._initIn);
+        }
+    }, {
+        key: '_initIn',
+        value: function _initIn() {
+            logger$4.debug('init IN');
+            var api_key = this._options.api_key;
+
+            if (!api_key) {
+                logger$4.warn('missing api_key');
+                return;
+            }
+
+            var IN = window.IN;
+            IN.init({
+                api_key: api_key,
+                authorize: true,
+                onLoad: "_in_onload"
+            });
+            this._IN = IN;
+        }
+    }, {
+        key: '_fullyLoaded',
+        value: function _fullyLoaded() {
+            logger$4.debug('fully loaded');
+            this._INLoaded = true;
+        }
+    }]);
+    return LinkedIn;
+}();
+
+var SSO = {
+    Google: Google,
+    Facebook: Facebook,
+    LinkedIn: LinkedIn
+};
+
+var logger$7 = new Logger('Subscriber');
+
+var Subscriber = function () {
+    function Subscriber(channel, noticeHandler) {
+        babelHelpers.classCallCheck(this, Subscriber);
+
+        this.channel = channel;
+        this.noticeHandler = noticeHandler;
+        this.cursor = -1;
+    }
+
+    babelHelpers.createClass(Subscriber, [{
+        key: 'notify',
+        value: function notify() {
+            var events = this.channel.poll(this.cursor);
+            this.cursor = channel.cursor;
+            if (events.length > 0) {
+                for (var i = 0; i < events.length; i++) {
+                    this._notifyEvent(events[i]);
+                }
+            }
+        }
+    }, {
+        key: '_notifyEvent',
+        value: function () {
+            var _ref = babelHelpers.asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(event) {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                try {
+                                    this.noticeHandler(event);
+                                } catch (e) {
+                                    logger$7.error('notify event error', e, event, this.noticeHandler);
+                                }
+
+                            case 1:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function _notifyEvent(_x) {
+                return _ref.apply(this, arguments);
+            }
+
+            return _notifyEvent;
+        }()
+    }]);
+    return Subscriber;
+}();
+
+var logger$6 = new Logger('Channel');
+
+var default_options$4 = {
+    bufferSize: 128
+};
+
+var Channel = function () {
+    function Channel(name, options) {
+        babelHelpers.classCallCheck(this, Channel);
+
+        this.name = name;
+        this.events = [];
+        this.subscribers = [];
+        this.cursor = -1;
+
+        this._options = Object.assign({}, default_options$4, options);
+    }
+
+    babelHelpers.createClass(Channel, [{
+        key: 'subscribe',
+        value: function subscribe(noticeHandler) {
+            var found = this.subscribers.filter(function (subscriber) {
+                return subscriber.noticeHandler === noticeHandler;
+            });
+            if (found.length > 0) {
+                logger$6.debug('duplicated subscription on channel ' + this.name, noticeHandler);
+                return;
+            }
+
+            var subscriber = new Subscriber(this, noticeHandler);
+            this.subscribers.push(subscriber);
+            subscriber.notify();
+        }
+    }, {
+        key: 'unsubscribe',
+        value: function unsubscribe(noticeHandler) {
+            this.subscribers = this.subscribers.filter(function (subscriber) {
+                return subscriber.noticeHandler !== noticeHandler;
+            });
+        }
+    }, {
+        key: 'send',
+        value: function send(event) {
+            if (!event) {
+                logger$6.warn('nothing to send to channel ' + this.name);
+            }
+
+            var size = this._options.bufferSize;
+            this.cursor++;
+            var idx = this.cursor % size;
+            if (idx < this.events.length) {
+                this.events[idx] = event;
+            } else {
+                this.events.push(event);
+            }
+
+            this.subscribers.forEach(function (subscriber) {
+                return subscriber.notify();
+            });
+        }
+    }, {
+        key: 'poll',
+        value: function poll(last_cursor) {
+            if (JS.isUndefined(lastCursor)) {
+                last_cursor = -1;
+            }
+            if (last_cursor === this.cursor) {
+                return [];
+            }
+
+            var list = [];
+            var size = this._options.bufferSize;
+            for (var i = last_cursor + 1; i <= this.cursor; i++) {
+                var idx = i % size;
+                if (idx >= this.events.length) {
+                    logger$6.error('idx overflow');
+                    break;
+                }
+                list.push(this.events[idx]);
+            }
+
+            return list;
+        }
+    }]);
+    return Channel;
+}();
+
+var logger$5 = new Logger('Pipe');
+
+var default_options$3 = {
+    bufferSize: 128
+};
+
+var CHANNEL_BROADCAST = '_broadcast_';
+
+var Pipe = function () {
+    function Pipe(name, options) {
+        babelHelpers.classCallCheck(this, Pipe);
+
+        this.name = name;
+        this._options = Object.assign({}, default_options$3, options);
+
+        this._channels = {};
+    }
+
+    babelHelpers.createClass(Pipe, [{
+        key: 'send',
+        value: function send(event, channel_name) {
+            if (!channel_name) {
+                channel_name = event.channel;
+            }
+            if (!channel_name) {
+                channel_name = CHANNEL_BROADCAST;
+            }
+            var channel = this._getChannel(channel_name);
+
+            channel.send(event);
+        }
+    }, {
+        key: 'subscribe',
+        value: function subscribe(noticeHandler, channel_name) {
+            if (!channel_name) {
+                channel_name = CHANNEL_BROADCAST;
+            }
+            var channel = this._getChannel(channel_name);
+
+            channel.subscribe(noticeHandler);
+        }
+    }, {
+        key: '_getChannel',
+        value: function _getChannel(name) {
+            if (!name) {
+                return null;
+            }
+            var channel = this._channels[name];
+            if (!channel) {
+                channel = new Channel(name);
+                this.channels[name] = channel;
+            }
+            return channel;
+        }
+    }]);
+    return Pipe;
+}();
+
+var pipe = new Pipe('_root_');
+
 var Url = function () {
     function Url() {
         babelHelpers.classCallCheck(this, Url);
@@ -597,8 +1368,11 @@ var Url = function () {
     return Url;
 }();
 
-exports.Logger = ConsoleLogger;
+exports.Logger = Logger;
 exports.Cache = _instance;
+exports.SSO = SSO;
+exports.Pipe = Pipe;
+exports.pipe = pipe;
 exports.Device = Device;
 exports.JS = JS;
 exports.Url = Url;

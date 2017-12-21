@@ -4,9 +4,11 @@
   "description": "Accumulated JavaScript toolkits library",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel src --out-dir lib",
-    "test": "mocha --require babel-register",
-    "pack": "rollup -c rollup.dev.js & rollup -c rollup.prod.js"
+    "build": "cp ./.babelrc.normal ./.babelrc && babel src --out-dir lib",
+    "test": "cp ./.babelrc.normal ./.babelrc && mocha --require babel-register",
+    "pack-dev": "cp ./.babelrc.rollup ./.babelrc && babel src --out-dir lib && rollup -c rollup.dev.js",
+    "pack-prod": "cp ./.babelrc.rollup ./.babelrc && babel src --out-dir lib && rollup -c rollup.prod.js",
+    "pack": "npm run pack-dev && npm run pack-prod"
   },
   "repository": {
     "type": "git",
