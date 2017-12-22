@@ -27,9 +27,11 @@ export default class Pipe {
 
     subscribe(noticeHandler, channel_name) {
         if (!channel_name) { channel_name = CHANNEL_BROADCAST; }
-        const channel = this._getChannel(channel_name);
-
-        channel.subscribe(noticeHandler);
+        const names = [].concat(channel_name);
+        names.forEach(name => {
+            const channel = this._getChannel(name);
+            channel.subscribe(noticeHandler);
+        });
     }
 
     clear() {

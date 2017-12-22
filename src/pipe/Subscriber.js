@@ -22,7 +22,7 @@ export default class Subscriber {
     _notifyEvent(event) {
         try {
             return new Promise((resolve, reject) => {
-                this.noticeHandler(event);
+                this.noticeHandler(event, this.channel.name);
                 resolve();
             });
         } catch (e) {
