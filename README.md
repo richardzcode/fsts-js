@@ -12,6 +12,7 @@ npm install --save fsts
 
 * [Logger](https://richardzcode.github.io/fsts-js/docs/guide_logger.html)
 * [Cache](https://richardzcode.github.io/fsts-js/docs/guide_cache.html)
+* [Pipe](https://richardzcode.github.io/fsts-js/docs/guide_pipe.html)
 * [Single Sign On](https://richardzcode.github.io/fsts-js/docs/guide_sso.html)
 * [JS](https://richardzcode.github.io/fsts-js/docs/guide_js.html)
 
