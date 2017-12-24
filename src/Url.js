@@ -14,4 +14,16 @@ export default class Url {
 
         return obj;
     }
+
+    static join() {
+        if (arguments.length === 0) { return '/'; }
+
+        let url = arguments[0];
+        for (var i = 1; i < arguments.length; i++) {
+            if (!url.endsWith('/')) { url = url + '/'; }
+            url += arguments[i];
+        }
+
+        return url;
+    }
 }
