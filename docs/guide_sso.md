@@ -62,6 +62,7 @@ Different provider requires different parameter, and returns different user obje
 ### Google
 
 Parameter: `google_client_id`
+
 User object:
 ```
     {
@@ -78,7 +79,7 @@ import { SSO } from 'fsts';
 const G = new SSO.Goolge(google_client_id);
 
 G.ready()
-    .check()
+    .then(() => G.check())
     .then(user => console.log(user))
     .catch(err => console.log(err));
 
@@ -94,6 +95,7 @@ G.signOut()
 ### Facebook
 
 Parameter: `facebook_app_id`
+
 User object:
 ```
     {
@@ -110,7 +112,7 @@ import { SSO } from 'fsts';
 const F = new SSO.Facebook(facebook_app_id);
 
 F.ready()
-    .check()
+    .then(() => F.check())
     .then(user => console.log(user))
     .catch(err => console.log(err));
 
@@ -126,6 +128,7 @@ F.signOut()
 ### LinkedIn
 
 Parameter: `api_key`
+
 User object:
 ```
     {
@@ -143,7 +146,7 @@ import { SSO } from 'fsts';
 const LI = new SSO.LinkedIn(api_key);
 
 LI.ready()
-    .check()
+    .then(() => LI.check())
     .then(user => console.log(user))
     .catch(err => console.log(err));
 
