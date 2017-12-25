@@ -53,6 +53,11 @@ export default class Ajax {
             })
             .catch(err => {
                 logge.error(err);
+                return {
+                    ok: false,
+                    status: 500,
+                    data: err
+                }
             });
     }
 
