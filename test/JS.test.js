@@ -21,4 +21,17 @@ describe('JS', function() {
             done();
         });
     });
+
+    describe('styleToCss', function() {
+        it('should convert fontSize to font-size', function(done) {
+            const css = JS.styleToCss({ fontSize: '12px' });
+            assert.equal(css, '{font-size:12px}');
+            done();
+        });
+        it('should convert multiple attributes', function(done) {
+            const css = JS.styleToCss({ fontSize: '12px', fontWeight: 100 });
+            assert.equal(css, '{font-size:12px;font-weight:100}');
+            done();
+        });
+    });
 });

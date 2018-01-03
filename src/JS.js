@@ -103,6 +103,18 @@ export default class JS {
         return new Date().getTime();
     }
 
+    // React
+    static styleToCss(style) {
+        if (!style) { return style; }
+
+        const css = Object.keys(style)
+            .map(key => {
+                const name = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+                return name + ':' + style[key];
+            });
+        return '{' + css.join(';') + '}';
+    }
+
     // General
     static isUndefined(val) {
         return (typeof val === 'undefined');
