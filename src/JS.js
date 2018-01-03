@@ -111,4 +111,10 @@ export default class JS {
     static undefinedThen(val, defVal) {
         return JS.isUndefined(val)? defVal : val;
     }
+
+    /** assume JS runing single thread **/
+    static cheapId() {
+        if (!JS.lastCheapId) { JS.lastCheapId = new Date.getTime(); }
+        return ++JS.lastCheapId;
+    }
 }
