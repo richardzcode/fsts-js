@@ -126,7 +126,7 @@ export default class JS {
 
     /** assume JS runing single thread **/
     static cheapId() {
-        if (!JS.lastCheapId) { JS.lastCheapId = new Date.getTime(); }
+        if (!JS.lastCheapId) { JS.lastCheapId = new Date().getTime(); }
         return ++JS.lastCheapId;
     }
 }
