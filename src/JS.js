@@ -112,7 +112,7 @@ export default class JS {
                 const name = key.replace(/([A-Z])/g, '-$1').toLowerCase();
                 return name + ':' + style[key];
             });
-        return '{' + css.join(';') + '}';
+        return '{' + css.join(';').replace(/"/g, '&quot;') + '}';
     }
 
     // General
