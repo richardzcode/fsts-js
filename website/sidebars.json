@@ -1,9 +1,0 @@
-{
-  "docs": {
-    "Getting Started": ["installation", "quick_start"],
-    "Guides": ["guide_logger", "guide_cache", "guide_pipe", "guide_sso", "guide_js"]
-  },
-  "docs-other": {
-    "First Category": ["doc4", "doc5"]
-  }
-}
