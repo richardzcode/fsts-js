@@ -24,6 +24,32 @@ export default class JS {
     }
 
     // Object
+    static deepAssign() {
+        if (arguments.length === 0) { return; }
+
+        let obj = arguments[0];
+        for (var i = 1; i < arguments.length; i++) {
+            const next = arguments[i];
+            Object.keys(next)
+                .forEach(key => {
+                    if (!obj[key]) { return JS._assignProp(obj, next, key); }
+                    if (typeof obj[key] !== typeof next[key]) {
+                        // override if type different
+                        return JS._assignProp(obj, next, key);
+                    }
+                    if (JS.isArray(next[key])) { return JS.appendUnique(obj[key], next[key]); }
+                    if (typeof next[key] === 'object') { return JS.deepAssign(obj[key], next[key]); }
+                    obj[key] = next[key];
+                });
+        }
+
+        return obj;
+    }
+    static _assignProp(first, second, key) {
+      if (typeof second[key] === 'object') { return first[key] = Object.assign({}, second[key]); }
+      first[key] = second[key];
+    }
+
     static lessProps(props, less) {
         const p = Object.assign({}, props);
         if (!less) { return p; }
