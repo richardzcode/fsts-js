@@ -131,7 +131,7 @@ export default class JS {
 
     // React
     static styleToCss(style) {
-        if (!style) { return style; }
+        if (!style) { return ''; }
 
         const css = Object.keys(style)
             .map(key => {
