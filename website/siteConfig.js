@@ -13,10 +13,10 @@ const siteConfig = {
   favicon: 'img/favicon.ico',
 
   headerLinks: [
-    {doc: 'installation', label: 'Docs'},
-    {doc: 'guide_logger', label: 'Guide'},
-    {page: 'help', label: 'Help'},
-    {blog: true, label: 'Blog'},
+    {type: 'doc', value: 'installation', label: 'Docs'},
+    {type: 'doc', value: 'guide_logger', label: 'Guide'},
+    {type: 'page', value: 'help', label: 'Help'},
+    {type: 'blog', label: 'Blog'},
   ]
 };
 
