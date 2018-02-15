@@ -23,6 +23,16 @@ export default class JS {
         return s;
     }
 
+    static format(src) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        if (args.length === 0) { return src; }
+        return src.replace(/{(\d+)}/g, (match, n) => {
+            return typeof args[n] === 'undefined'
+                ? match
+                : args[n];
+        });
+    }
+
     // Object
     static deepAssign() {
         if (arguments.length === 0) { return; }

@@ -22,6 +22,14 @@ describe('JS', function() {
         });
     });
 
+    describe('format', function() {
+      it('should replace {0} to foo', function(done) {
+        const dest = JS.format('abc{0}', 'foo');
+        assert.equal(dest, 'abcfoo');
+        done();
+      });
+    });
+
     describe('styleToCss', function() {
         it('should convert fontSize to font-size', function(done) {
             const css = JS.styleToCss({ fontSize: '12px' });
