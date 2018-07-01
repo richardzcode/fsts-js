@@ -1,3 +1,7 @@
+const Minute_In_Milli = 60 * 1000;
+const Hour_In_Milli = 60 * Minute_In_Milli;
+const Day_In_Milli = 24 * Hour_In_Milli;
+
 export default class JS {
     // String
     static isString(val) {
@@ -137,6 +141,72 @@ export default class JS {
     // Date Time
     static ts() {
         return new Date().getTime();
+    }
+
+    static clientTimezoneOffset() { // in milliseconds
+        const dt = new Date();
+        const tzo = dt.getTimezoneOffset();
+        return tzo * Minute_In_Milli;
+    }
+
+    static utcToLocal(ts) {
+        return ts - JS.clientTimezoneOffset();
+    }
+
+    static localToUtc(ts) {
+        return ts + JS.clientTimezoneOffset();
+    }
+
+    static roundToMinutes(ts) {
+        return Math.floor(ts / Minute_In_Milli) * Minute_In_Milli;
+    };
+
+    static roundToHours(ts) {
+        return Math.floor(ts / Hour_In_Milli) * Hour_In_Milli;
+    };
+
+    static roundToDates(ts) {
+        return Math.floor(ts / Day_In_Milli) * Day_In_Milli;
+    };
+
+    static today() {
+        return roundToDates(new Date().getTime());
+    };
+
+    static nextDay(n) {
+        return JS.today() + Day_In_Milli * (n || 1);
+    }
+
+    static thisSunday() {
+        const td = JS.today();
+        const dt = new Date(td);
+        return td - dt.getDay() * Day_In_Milli;
+    }
+
+    static nextSunday(n) {
+        return JS.thisSunday() + 7 * Day_In_Milli * (n || 1);
+    }
+
+    static thisMonth() {
+        const td = JS.today();
+        const dt = new Date(td);
+        return td - (dt.getDate() - 1) * Day_In_Milli;
+    }
+
+    static nextMonth(n) {
+        n = n || 1;
+        const td = JS.today();
+        const dt = new Date(td);
+        const m = dt.getMonth();
+        const next_y = dt.getFullYear() + Math.floor((m + 1 + n) / 12);
+        const next_m = (m + n) % 12;
+        const next_dstr = [
+            next_y,
+            JS.padNumber(next_m + 1, 2),
+            '01'
+        ].join('-') + ' 00:00:00';
+        const next_dt = new Date(next_dstr);
+        return next_dt.getTime();
     }
 
     // React
