@@ -66,7 +66,7 @@ export default class JS {
 
     static lessProps(props, less) {
         const p = Object.assign({}, props);
-        if (!less) { return p; }
+        if (!props || !less) { return p; }
 
         const list = [].concat(less);
         list.forEach(prop => {
