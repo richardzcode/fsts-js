@@ -92,4 +92,19 @@ describe('JS', function() {
             done();
         });
     });
+
+    describe('isNumber', function() {
+        it('should 0 is number', function(done) {
+            assert.equal(JS.isNumber('0'), true);
+            done();
+        });
+        it('should 10 is number', function(done) {
+            assert.equal(JS.isNumber('10'), true);
+            done();
+        });
+        it('should empty string is not number', function(done) {
+            assert.equal(JS.isNumber(''), false);
+            done();
+        });
+    });
 });

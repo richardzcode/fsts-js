@@ -230,6 +230,12 @@ export default class JS {
         return JS.isUndefined(val)? defVal : val;
     }
 
+    static isNumber(val) {
+      if (!val) { return false; }
+
+      return !isNaN(val);
+    }
+
     /** assume JS runing single thread **/
     static cheapId() {
         if (!JS.lastCheapId) { JS.lastCheapId = new Date().getTime(); }
